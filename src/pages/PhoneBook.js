@@ -13,6 +13,18 @@ const TheApp = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
 
+  // fetch all contacts from firebase
+  useEffect(() => {
+    getContacts();
+  }, []);
+  const getContacts = async () => {
+    const data = await phonebookServices.getAllContacts();
+    console.log(
+      data.docs.map((doc) => {
+        return doc.id;
+      })
+    );
+  };
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {

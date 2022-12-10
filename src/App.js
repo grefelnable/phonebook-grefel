@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import PhoneBook from "./pages/PhoneBook";
 import Code from "./pages/Code";
@@ -20,6 +22,7 @@ function App() {
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   );
 }
