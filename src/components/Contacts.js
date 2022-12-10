@@ -9,7 +9,6 @@ const Contacts = ({ persons }) => {
       return -1;
     }
   });
-  console.log(sortedPersons);
   return (
     <section className="w-full h-[calc(100vh-6rem)] bg-neutral-content p-6">
       <h1 className="text-2xl text-base-100 font-bold mb-4">All Contacts</h1>
@@ -20,8 +19,8 @@ const Contacts = ({ persons }) => {
           <div className="flex justify-between items-center border-b border-neutral-focus p-1">
             {/* avatar and name */}
             <section className="flex gap-2 items-center">
-              <div class="avatar placeholder">
-                <div class="bg-neutral-focus text-neutral-content rounded-full w-12">
+              <div className="avatar placeholder">
+                <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
                   <span>{firstLetter}</span>
                 </div>
               </div>
