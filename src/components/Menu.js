@@ -15,9 +15,10 @@ const Menu = () => {
         </label>
       </div>
 
-      <button className="btn btn-ghost btn-xs block mx-auto">
+      <button className="btn btn-ghost btn-xs block mx-auto mb-4">
         All Contacts
       </button>
+      <button className="btn btn-ghost btn-xs block mx-auto">Favorites</button>
     </section>
   );
 };
