@@ -6,11 +6,7 @@ import Contacts from "../components/Contacts";
 import Menu from "../components/Menu";
 
 const TheApp = () => {
-  const [persons, setPersons] = useState([
-    { name: "Grefel Nable", number: "647 774 3845" },
-    { name: "Marca Pina", number: "774 345 6789" },
-    { name: "Carlo Rossi", number: "789 456 1234" },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,16 +14,18 @@ const TheApp = () => {
   // fetch all contacts from firebase
   useEffect(() => {
     getContacts();
+    console.log(persons);
   }, []);
   const getContacts = async () => {
     const data = await phonebookServices.getAllContacts();
-    console.log(
+    setPersons(
       data.docs.map((doc) => {
-        return doc.id;
+        return { ...doc.data(), id: doc.id };
       })
     );
   };
-  const addPerson = (event) => {
+  // add Contact
+  const addPerson = async (event) => {
     event.preventDefault();
     const personObject = {
       name: newName,
@@ -37,7 +35,13 @@ const TheApp = () => {
       toast.error("Please Fill Out Fields");
       return;
     }
-    setPersons(persons.concat(personObject));
+    try {
+      await phonebookServices.addContact(personObject);
+      toast.success("Contact Added Successfully!");
+    } catch (err) {
+      toast.error(`${err.message}`);
+    }
+
     setNewName("");
     setNewNumber("");
     setIsModalOpen(false);
@@ -54,7 +58,7 @@ const TheApp = () => {
   };
   return (
     <main>
-      <div className="flex">
+      <div className="md:flex">
         {/* left menu */}
         <Menu setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
         {/* mid menu */}
