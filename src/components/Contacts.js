@@ -16,7 +16,10 @@ const Contacts = ({ persons }) => {
       {sortedPersons.map((person) => {
         const firstLetter = person.name.substring(0, 1).toUpperCase();
         return (
-          <div className="flex justify-between items-center border-b border-neutral-focus p-1">
+          <div
+            key={person.id}
+            className="flex justify-between items-center border-b border-neutral-focus p-1"
+          >
             {/* avatar and name */}
             <section className="flex gap-2 items-center">
               <div className="avatar placeholder">
