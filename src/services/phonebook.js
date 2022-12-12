@@ -18,7 +18,14 @@ const getAllContacts = () => {
 const addContact = (newContact) => {
   return addDoc(phonebookCollectionRef, newContact);
 };
+// Delete Contact
+const deleteContact = (id) => {
+  // variable to check if the particular contact exists.
+  const contactDoc = doc(db, "phonebook", id);
+  return deleteDoc(contactDoc);
+};
 export default {
   getAllContacts,
   addContact,
+  deleteContact,
 };

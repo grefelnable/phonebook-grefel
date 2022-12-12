@@ -1,14 +1,41 @@
-import React from "react";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import phonebookServices from "../services/phonebook";
 
-const AddContact = ({
-  addPerson,
-  newName,
-  newNumber,
-  handleNameChange,
-  handleNumberChange,
-  isModalOpen,
-  setIsModalOpen,
-}) => {
+const AddContact = ({ isModalOpen, setIsModalOpen }) => {
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+  // add Contact
+  const addPerson = async (event) => {
+    event.preventDefault();
+    const personObject = {
+      name: newName,
+      number: newNumber,
+    };
+    if (!newName || !newNumber) {
+      toast.error("Please Fill Out Fields");
+      return;
+    }
+    try {
+      await phonebookServices.addContact(personObject);
+      toast.success("Contact Added Successfully!");
+    } catch (err) {
+      toast.error(`${err.message}`);
+    }
+
+    setNewName("");
+    setNewNumber("");
+    setIsModalOpen(false);
+  };
+
+  const handleNameChange = (event) => {
+    console.log(event.target.value);
+    setNewName(event.target.value);
+  };
+  const handleNumberChange = (event) => {
+    console.log(event.target.value);
+    setNewNumber(event.target.value);
+  };
   return (
     <>
       <div className={`modal ${isModalOpen === true ? "modal-open" : ""}`}>
