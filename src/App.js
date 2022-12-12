@@ -22,7 +22,7 @@ function App() {
           <Route path="*" element={<Error />} />
         </Route>
       </Routes>
-      <ToastContainer />
+      <ToastContainer position="top-center" />
     </BrowserRouter>
   );
 }

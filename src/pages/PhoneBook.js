@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import phonebookServices from "../services/phonebook";
 import AddContact from "../components/AddContact";
 import Contacts from "../components/Contacts";
@@ -12,6 +13,7 @@ const TheApp = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // fetch all contacts from firebase
   useEffect(() => {
@@ -31,9 +33,14 @@ const TheApp = () => {
       name: newName,
       number: newNumber,
     };
+    if (!newName || !newNumber) {
+      toast.error("Please Fill Out Fields");
+      return;
+    }
     setPersons(persons.concat(personObject));
     setNewName("");
     setNewNumber("");
+    setIsModalOpen(false);
     console.log("submitted", persons);
   };
 
@@ -49,7 +56,7 @@ const TheApp = () => {
     <main>
       <div className="flex">
         {/* left menu */}
-        <Menu />
+        <Menu setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
         {/* mid menu */}
         <Contacts persons={persons} />
       </div>
@@ -59,6 +66,8 @@ const TheApp = () => {
         newNumber={newNumber}
         handleNameChange={handleNameChange}
         handleNumberChange={handleNumberChange}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
       />
     </main>
   );

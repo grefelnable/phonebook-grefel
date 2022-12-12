@@ -6,11 +6,12 @@ const AddContact = ({
   newNumber,
   handleNameChange,
   handleNumberChange,
+  isModalOpen,
+  setIsModalOpen,
 }) => {
   return (
     <>
-      <input type="checkbox" id="add-contact" className="modal-toggle" />
-      <div className="modal">
+      <div className={`${isModalOpen === true ? "modal-open modal" : ""}`}>
         <form onSubmit={addPerson} className="modal-box">
           <h3 className="font-bold text-lg mb-8">Add Contact</h3>
           <input
@@ -25,13 +26,20 @@ const AddContact = ({
             onChange={handleNumberChange}
             type="text"
             placeholder="Number"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-xs mb-4"
           />
-          <button type="submit" className="modal-action">
-            <label htmlFor="add-contact" className="btn btn-secondary btn-sm">
+          <div className="flex gap-2">
+            <button type="submit" className="btn btn-secondary btn-sm block">
               add
-            </label>
-          </button>
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(!isModalOpen)}
+              className="btn btn-error btn-sm block"
+            >
+              cancel
+            </button>
+          </div>
         </form>
       </div>
     </>
