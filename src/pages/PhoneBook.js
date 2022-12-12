@@ -10,11 +10,12 @@ const TheApp = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   // Popup is user wants to delete
   const [popup, setPopup] = useState({ show: false, id: null });
+  // id for editing contact
+  const [contactId, setContactId] = useState("");
 
   //Popup show and hide
   const handlePopup = (id) => setPopup({ show: true, id });
   const handleCancel = () => setPopup({ show: false, id: null });
-  console.log(popup);
   // fetch all contacts from firebase
   useEffect(() => {
     getContacts();
@@ -35,13 +36,32 @@ const TheApp = () => {
     getContacts();
     setPopup({ show: false, id: null });
   };
+
+  // Contact ID handler
+  const getContactIdHandler = (id) => {
+    console.log(`The id to be edited ${id}`);
+    setContactId(id);
+  };
   return (
     <main>
       <div className="md:flex">
         <Menu setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
-        <Contacts persons={persons} handlePopup={handlePopup} />
+        <Contacts
+          persons={persons}
+          handlePopup={handlePopup}
+          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isModalOpen}
+          getContactId={getContactIdHandler}
+        />
       </div>
-
+      {/* Modal for adding or editing contact */}
+      <AddContact
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        getContacts={getContacts}
+        contactId={contactId}
+        setContactId={setContactId}
+      />
       {/* popup if user wants to delete contact */}
       <div className={`modal ${popup.show ? "modal-open" : ""}`}>
         <div className="modal-box">
@@ -60,12 +80,6 @@ const TheApp = () => {
           </div>
         </div>
       </div>
-      {/* Modal for adding or editing contact */}
-      <AddContact
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        getContacts={getContacts}
-      />
     </main>
   );
 };

@@ -2,7 +2,13 @@ import React from "react";
 import { BiEdit } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
 
-const Contacts = ({ persons, handlePopup }) => {
+const Contacts = ({
+  persons,
+  handlePopup,
+  setIsModalOpen,
+  isModalOpen,
+  getContactId,
+}) => {
   // sort names from A to Z
   const sortedPersons = persons.sort((a, b) => {
     if (a.name > b.name) {
@@ -39,7 +45,13 @@ const Contacts = ({ persons, handlePopup }) => {
                 <p className="text-neutral-focus">+1 {person.number}</p>
               </section>
               <div className="flex gap-1">
-                <button className="btn btn-success btn-sm">
+                <button
+                  className="btn btn-success btn-sm"
+                  onClick={(e) => {
+                    setIsModalOpen(!isModalOpen);
+                    getContactId(person.id);
+                  }}
+                >
                   <BiEdit />
                 </button>
                 <button

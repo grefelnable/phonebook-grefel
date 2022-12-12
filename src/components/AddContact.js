@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import phonebookServices from "../services/phonebook";
 
-const AddContact = ({ isModalOpen, setIsModalOpen, getContacts }) => {
+const AddContact = ({
+  isModalOpen,
+  setIsModalOpen,
+  getContacts,
+  contactId,
+  setContactId,
+}) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   // add Contact
@@ -17,10 +23,17 @@ const AddContact = ({ isModalOpen, setIsModalOpen, getContacts }) => {
       toast.error("Please Fill Out Fields");
       return;
     }
-    // Add Contact
+    // Add or update Contact
     try {
-      await phonebookServices.addContact(personObject);
-      toast.success("Contact Added Successfully!");
+      // Check if it's an update or new addition
+      if (contactId !== undefined && contactId !== "") {
+        await phonebookServices.updateContact(contactId, personObject);
+        setContactId("");
+        toast.success("Updated Successfully!");
+      } else {
+        await phonebookServices.addContact(personObject);
+        toast.success("Contact Added Successfully!");
+      }
     } catch (err) {
       toast.error(`${err.message}`);
     }
@@ -39,11 +52,31 @@ const AddContact = ({ isModalOpen, setIsModalOpen, getContacts }) => {
     console.log(event.target.value);
     setNewNumber(event.target.value);
   };
+
+  // Populate the form with the specific contact to be edited
+  const editHandler = async () => {
+    try {
+      const docSnapshot = await phonebookServices.getContact(contactId);
+      console.log("The record is", docSnapshot.data());
+      setNewName(docSnapshot.data().name);
+      setNewNumber(docSnapshot.data().number);
+    } catch (err) {
+      toast.error(`${err.message}`);
+    }
+  };
+
+  // Runs to edit contact
+  useEffect(() => {
+    console.log("The id here is: ", contactId);
+    if (contactId !== undefined && contactId !== "") {
+      editHandler();
+    }
+  }, [contactId]);
   return (
     <>
       <div className={`modal ${isModalOpen === true ? "modal-open" : ""}`}>
         <form onSubmit={addPerson} className="modal-box">
-          <h3 className="font-bold text-lg mb-8">Add Contact</h3>
+          <h3 className="font-bold text-lg mb-8">Add/Edit Contact</h3>
           <input
             value={newName}
             onChange={handleNameChange}
@@ -60,7 +93,7 @@ const AddContact = ({ isModalOpen, setIsModalOpen, getContacts }) => {
           />
           <div className="flex gap-2">
             <button type="submit" className="btn btn-secondary btn-sm block">
-              add
+              add/edit
             </button>
             <button
               type="button"
