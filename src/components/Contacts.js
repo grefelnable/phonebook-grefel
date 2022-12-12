@@ -2,7 +2,7 @@ import React from "react";
 import { BiEdit } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
 
-const Contacts = ({ persons }) => {
+const Contacts = ({ persons, handlePopup }) => {
   // sort names from A to Z
   const sortedPersons = persons.sort((a, b) => {
     if (a.name > b.name) {
@@ -42,7 +42,10 @@ const Contacts = ({ persons }) => {
                 <button className="btn btn-success btn-sm">
                   <BiEdit />
                 </button>
-                <button className="btn btn-error btn-sm">
+                <button
+                  className="btn btn-error btn-sm"
+                  onClick={(e) => handlePopup(person.id)}
+                >
                   <MdDeleteOutline />
                 </button>
               </div>

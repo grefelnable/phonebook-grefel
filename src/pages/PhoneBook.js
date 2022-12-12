@@ -6,13 +6,20 @@ import Menu from "../components/Menu";
 
 const TheApp = () => {
   const [persons, setPersons] = useState([]);
+  // Modal for adding and editing contact
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // Popup is user wants to delete
+  const [popup, setPopup] = useState({ show: false, id: null });
 
+  //Popup show and hide
+  const handlePopup = (id) => setPopup({ show: true, id });
+  const handleCancel = () => setPopup({ show: false, id: null });
+  console.log(popup);
   // fetch all contacts from firebase
   useEffect(() => {
     getContacts();
-    console.log(persons);
   }, []);
+
   const getContacts = async () => {
     const data = await phonebookServices.getAllContacts();
     setPersons(
@@ -22,15 +29,43 @@ const TheApp = () => {
     );
   };
 
+  // Delete Contact
+  const deleteHandler = async () => {
+    await phonebookServices.deleteContact(popup.id);
+    getContacts();
+    setPopup({ show: false, id: null });
+  };
   return (
     <main>
       <div className="md:flex">
-        {/* left menu */}
         <Menu setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
-        {/* mid menu */}
-        <Contacts persons={persons} />
+        <Contacts persons={persons} handlePopup={handlePopup} />
       </div>
-      <AddContact isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+
+      {/* popup if user wants to delete contact */}
+      <div className={`modal ${popup.show ? "modal-open" : ""}`}>
+        <div className="modal-box">
+          <p className="py-4">Are you sure you want to delete?</p>
+          <div className="modal-action">
+            <button type="button" className="btn" onClick={deleteHandler}>
+              Ok
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Modal for adding or editing contact */}
+      <AddContact
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        getContacts={getContacts}
+      />
     </main>
   );
 };

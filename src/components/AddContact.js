@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import phonebookServices from "../services/phonebook";
 
-const AddContact = ({ isModalOpen, setIsModalOpen }) => {
+const AddContact = ({ isModalOpen, setIsModalOpen, getContacts }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   // add Contact
@@ -12,10 +12,12 @@ const AddContact = ({ isModalOpen, setIsModalOpen }) => {
       name: newName,
       number: newNumber,
     };
+    // Run error if fields are empty
     if (!newName || !newNumber) {
       toast.error("Please Fill Out Fields");
       return;
     }
+    // Add Contact
     try {
       await phonebookServices.addContact(personObject);
       toast.success("Contact Added Successfully!");
@@ -26,6 +28,7 @@ const AddContact = ({ isModalOpen, setIsModalOpen }) => {
     setNewName("");
     setNewNumber("");
     setIsModalOpen(false);
+    getContacts();
   };
 
   const handleNameChange = (event) => {
