@@ -61,6 +61,7 @@ const TheApp = () => {
         getContacts={getContacts}
         contactId={contactId}
         setContactId={setContactId}
+        persons={persons}
       />
       {/* popup if user wants to delete contact */}
       <div className={`modal ${popup.show ? "modal-open" : ""}`}>

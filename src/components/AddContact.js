@@ -8,6 +8,7 @@ const AddContact = ({
   getContacts,
   contactId,
   setContactId,
+  persons,
 }) => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
@@ -23,6 +24,7 @@ const AddContact = ({
       toast.error("Please Fill Out Fields");
       return;
     }
+
     // Add or update Contact
     try {
       // Check if it's an update or new addition
@@ -31,6 +33,17 @@ const AddContact = ({
         setContactId("");
         toast.success("Updated Successfully!");
       } else {
+        // Check for duplicates
+        if (
+          persons.find((person) => person.name === personObject.name) ||
+          persons.find(
+            (person) =>
+              person.name === personObject.name &&
+              person.number === personObject.number
+          )
+        ) {
+          return toast.error(`${newName} is already added to the phonebook.`);
+        }
         await phonebookServices.addContact(personObject);
         toast.success("Contact Added Successfully!");
       }
@@ -97,7 +110,9 @@ const AddContact = ({
             </button>
             <button
               type="button"
-              onClick={() => setIsModalOpen(!isModalOpen)}
+              onClick={() => (
+                setIsModalOpen(!isModalOpen), setNewName(""), setNewNumber("")
+              )}
               className="btn btn-error btn-sm block"
             >
               cancel
