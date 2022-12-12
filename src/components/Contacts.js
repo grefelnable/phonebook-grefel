@@ -1,6 +1,7 @@
-import React from "react";
+import { useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { MdDeleteOutline } from "react-icons/md";
+import Filter from "./Filter";
 
 const Contacts = ({
   persons,
@@ -9,6 +10,13 @@ const Contacts = ({
   isModalOpen,
   getContactId,
 }) => {
+  const [search, setSearch] = useState("");
+  // Filter function
+  const searchHandler = (event) => {
+    console.log("Searching", event.target.value);
+    let lowerCase = event.target.value.toLowerCase();
+    setSearch(lowerCase);
+  };
   // sort names from A to Z
   const sortedPersons = persons.sort((a, b) => {
     if (a.name > b.name) {
@@ -17,11 +25,18 @@ const Contacts = ({
       return -1;
     }
   });
+  // Filter Contacts
+  const filteredContacts = sortedPersons.filter((person) => {
+    if (search === "") {
+      return person;
+    } else {
+      return person.name.toLowerCase().includes(search);
+    }
+  });
   return (
     <section className="w-full h-[calc(100vh-6rem)] bg-neutral-content p-6">
-      <h1 className="text-2xl text-base-100 font-bold mb-4">All Contacts</h1>
-
-      {sortedPersons.map((person) => {
+      <Filter searchHandler={searchHandler} />
+      {filteredContacts.map((person) => {
         const firstLetter = person.name.substring(0, 1).toUpperCase();
         return (
           <div
