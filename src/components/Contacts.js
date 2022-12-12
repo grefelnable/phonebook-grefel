@@ -13,7 +13,6 @@ const Contacts = ({
   const [search, setSearch] = useState("");
   // Filter function
   const searchHandler = (event) => {
-    console.log("Searching", event.target.value);
     let lowerCase = event.target.value.toLowerCase();
     setSearch(lowerCase);
   };
@@ -34,7 +33,7 @@ const Contacts = ({
     }
   });
   return (
-    <section className="w-full h-[calc(100vh-6rem)] bg-neutral-content p-6">
+    <section className="w-full h-[calc(100vh-6rem)] bg-slate-200 p-6">
       <Filter searchHandler={searchHandler} />
       {filteredContacts.map((person) => {
         const firstLetter = person.name.substring(0, 1).toUpperCase();
@@ -51,7 +50,7 @@ const Contacts = ({
                 </div>
               </div>
               <div>
-                <h3 className="text-base-200">{person.name}</h3>
+                <h5 className="text-base-200">{person.name}</h5>
               </div>
             </section>
             {/* number and edit buttons */}
