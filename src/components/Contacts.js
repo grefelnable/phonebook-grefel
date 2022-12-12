@@ -1,4 +1,6 @@
 import React from "react";
+import { BiEdit } from "react-icons/bi";
+import { MdDeleteOutline } from "react-icons/md";
 
 const Contacts = ({ persons }) => {
   // sort names from A to Z
@@ -31,9 +33,20 @@ const Contacts = ({ persons }) => {
                 <h3 className="text-base-200">{person.name}</h3>
               </div>
             </section>
-            <section>
-              <p className="text-neutral-focus">+1 {person.number}</p>
-            </section>
+            {/* number and edit buttons */}
+            <div className="flex gap-1 items-center">
+              <section>
+                <p className="text-neutral-focus">+1 {person.number}</p>
+              </section>
+              <div className="flex gap-1">
+                <button className="btn btn-success btn-sm">
+                  <BiEdit />
+                </button>
+                <button className="btn btn-error btn-sm">
+                  <MdDeleteOutline />
+                </button>
+              </div>
+            </div>
           </div>
         );
       })}
