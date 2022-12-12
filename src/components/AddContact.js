@@ -11,7 +11,7 @@ const AddContact = ({
 }) => {
   return (
     <>
-      <div className={`${isModalOpen === true ? "modal-open modal" : ""}`}>
+      <div className={`modal ${isModalOpen === true ? "modal-open" : ""}`}>
         <form onSubmit={addPerson} className="modal-box">
           <h3 className="font-bold text-lg mb-8">Add Contact</h3>
           <input
