@@ -22,9 +22,6 @@ const Navbar = () => {
           <li>
             <Link to="/repo">The Repo</Link>
           </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
         </ul>
       </div>
       {/* display on small screen */}
